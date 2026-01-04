@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user';
 import { User } from '../../models/user';
@@ -7,33 +7,36 @@ import { User } from '../../models/user';
   selector: 'app-users',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './users.html',
-  styleUrls: ['./users.css']
+  templateUrl: './users.html'
 })
 export class UsersComponent implements OnInit {
 
   users: User[] = [];
   loading = true;
-  error: string | null = null;
+  error = '';
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-ngOnInit(): void {
-  console.log('UsersComponent INIT'); // 🔹 línea de depuración
+  ngOnInit(): void {
+    console.log('UsersComponent INIT');
 
- this.userService.getUsers().subscribe({
-  next: (data: User[]) => {
-    console.log('DATA:', data);
-    this.users = data;      // ✅ actualiza array
-    this.loading = false;   // ✅ esto debe ocultar "Cargando..."
-  },
-  error: (err: any) => {
-    console.error('ERROR HTTP', err);
-    this.error = 'Error cargando usuarios';
-    this.loading = false;
+    this.userService.getUsers().subscribe({
+      next: (data: User[]) => {
+        console.log('DATA:', data);
+
+        this.users = data;
+        this.loading = false;
+
+        this.cdr.detectChanges(); // 👈 CLAVE ABSOLUTA
+      },
+      error: () => {
+        this.error = 'Error al cargar usuarios';
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
   }
-});
-
-
-}
 }
