@@ -1,10 +1,30 @@
-<h2>USERS COMPONENT FUNCIONA</h2>
 
-<p>loading: {{ loading }}</p>
-<p>users.length: {{ users.length }}</p>
+<h1>Evalua Consultores - Prueba Tecnica Desarrollador Fullstack</h1>
 
-<ul>
-  <li *ngFor="let u of users">
-    {{ u.first_name }} {{ u.last_name }}
-  </li>
-</ul>
+<h2>Usuarios</h2>
+
+<p>DEBUG loading: {{ loading }}</p>
+<p>DEBUG users.length: {{ users.length }}</p>
+
+
+<p *ngIf="loading">Cargando...</p>
+<p *ngIf="error">{{ error }}</p>
+
+<table *ngIf="!loading && users.length > 0" border="1">
+  <tr>
+    <th>ID</th>
+    <th>Nombre</th>
+    <th>Apellido</th>
+    <th>Nacionalidad</th>
+    <th>phone</th>
+    <th>Email</th>
+  </tr>
+  <tr *ngFor="let u of users">
+    <td>{{ u.id }}</td>
+    <td>{{ u.first_name }}</td>
+    <td>{{ u.last_name }}</td>
+    <td>{{ u.nationality }}</td>
+    <td>{{ u.phone | phoneFormat }}</td>
+    <td>{{ u.email }}</td>
+  </tr>
+</table>

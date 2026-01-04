@@ -2,11 +2,14 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user';
 import { User } from '../../models/user';
+import { PhoneFormatPipe } from '../../pipes/phone-format-pipe';
+
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,
+    PhoneFormatPipe],
   templateUrl: './users.html'
 })
 export class UsersComponent implements OnInit {
